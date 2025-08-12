@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(LearnOpenGL LANGUAGES C CXX)
+project(renderer LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,11 +16,12 @@ add_library(glad STATIC extern/glad/src/glad.c)
 target_include_directories(glad PUBLIC extern/glad/include)
 
 # Your sources
-file(GLOB SRCS src/*.cpp)
+file(GLOB_RECURSE SRCS src/*.cpp)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 target_include_directories(${PROJECT_NAME} 
     PRIVATE 
+        src
         extern/glad/include
         extern/stb_image
         ${ASSIMP_INCLUDE_DIRS}
