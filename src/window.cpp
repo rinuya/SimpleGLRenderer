@@ -58,14 +58,15 @@ void Window::processInput() {
   if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window_, true);
 
-  if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS)
-    camera_.ProcessKeyboard(FORWARD, deltaTime_);
+  if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
+    camera_.processKeyboard(FORWARD, deltaTime_);
+  }
   if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS)
-    camera_.ProcessKeyboard(BACKWARD, deltaTime_);
+    camera_.processKeyboard(BACKWARD, deltaTime_);
   if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS)
-    camera_.ProcessKeyboard(LEFT, deltaTime_);
+    camera_.processKeyboard(LEFT, deltaTime_);
   if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS)
-    camera_.ProcessKeyboard(RIGHT, deltaTime_);
+    camera_.processKeyboard(RIGHT, deltaTime_);
   if (glfwGetKey(window_, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS) {
     captureMouse_ = false;
     firstMouse_ = true;
@@ -124,9 +125,9 @@ void Window::handleMouseInput(double xposIn, double yposIn) {
   lastX_ = xpos;
   lastY_ = ypos;
 
-  camera_.ProcessMouseMovement(xoffset, yoffset);
+  camera_.processMouseMovement(xoffset, yoffset);
 }
 
 void Window::handleScrollInput(double xoffset, double yoffset) {
-  camera_.ProcessMouseScroll((float)yoffset);
+  camera_.processMouseScroll((float)yoffset);
 }

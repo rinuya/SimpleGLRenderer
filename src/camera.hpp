@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <glad/glad.h>
+#include <iostream>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -84,7 +85,7 @@ class Camera {
    *
    * @return glm::mat4 The view transformation matrix.
    */
-  glm::mat4 GetViewMatrix();
+  glm::mat4 getViewMatrix();
 
   /**
    * @brief Processes keyboard input to move the camera position.
@@ -94,7 +95,7 @@ class Camera {
    * @param deltaTime Time elapsed since last frame to maintain consistent
    * movement speed.
    */
-  void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+  void processKeyboard(Camera_Movement direction, float deltaTime);
 
   /**
    * @brief Processes mouse movement input to adjust the camera's yaw and pitch
@@ -105,7 +106,7 @@ class Camera {
    * @param constrainPitch Whether to constrain the pitch angle to avoid screen
    * flipping (default true).
    */
-  void ProcessMouseMovement(float xoffset,
+  void processMouseMovement(float xoffset,
                             float yoffset,
                             GLboolean constrainPitch = true);
 
@@ -115,7 +116,7 @@ class Camera {
    *
    * @param yoffset Scroll offset in the vertical direction.
    */
-  void ProcessMouseScroll(float yoffset);
+  void processMouseScroll(float yoffset);
 
  private:
   /**

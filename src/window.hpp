@@ -28,7 +28,7 @@ class Window {
          Camera& camera);
 
   /**
-   * @brief Get init state
+   * @brief Check if Window object init failed
    *
    * @return true
    * @return false
@@ -64,7 +64,7 @@ class Window {
  private:
   bool initFailed_;
 
-  Camera camera_;
+  Camera& camera_;
   bool captureMouse_;
   bool firstMouse_;
   float lastX_;

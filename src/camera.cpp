@@ -31,23 +31,28 @@ Camera::Camera(float posX,
   updateCameraVectors();
 }
 
-glm::mat4 Camera::GetViewMatrix() {
+glm::mat4 Camera::getViewMatrix() {
   return glm::lookAt(Position, Position + Front, Up);
 }
 
-void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime) {
+void Camera::processKeyboard(Camera_Movement direction, float deltaTime) {
   float velocity = MovementSpeed * deltaTime;
-  if (direction == FORWARD)
+
+  if (direction == FORWARD) {
     Position += Front * velocity;
-  if (direction == BACKWARD)
+  }
+  if (direction == BACKWARD) {
     Position -= Front * velocity;
-  if (direction == LEFT)
+  }
+  if (direction == LEFT) {
     Position -= Right * velocity;
-  if (direction == RIGHT)
+  }
+  if (direction == RIGHT) {
     Position += Right * velocity;
+  }
 }
 
-void Camera::ProcessMouseMovement(float xoffset,
+void Camera::processMouseMovement(float xoffset,
                                   float yoffset,
                                   GLboolean constrainPitch) {
   xoffset *= MouseSensitivity;
@@ -69,7 +74,7 @@ void Camera::ProcessMouseMovement(float xoffset,
   updateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float yoffset) {
+void Camera::processMouseScroll(float yoffset) {
   Fov -= (float)yoffset;
   if (Fov < 1.0f)
     Fov = 1.0f;
