@@ -5,6 +5,7 @@
 
 #include <iostream>
 
+#include "lightmanager.hpp"
 #include "model.hpp"
 #include "shader.hpp"
 #include "window.hpp"
@@ -33,7 +34,20 @@ int main() {
   /*
     SHADERS
   */
-  Shader basicShader("./shaders/vBasic.glsl", "./shaders/fBasic.glsl");
+  Shader basicShader("./shaders/vLightShader.glsl",
+                     "./shaders/fLightShader.glsl");
+
+  /*
+    LIGHT MANAGER
+  */
+  LightManager lightManager;
+  // blue-ish light
+  lightManager.addDirLight(
+      glm::vec3(0.0f, -1.0f, -1.0f), glm::vec3(0.1f, 0.1f, 0.1f),
+      glm::vec3(0.5f, 0.5f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f));
+
+  basicShader.use();
+  lightManager.sendLightsToShader(basicShader);
 
   /*
     MODELS
@@ -70,6 +84,7 @@ int main() {
   }
 
   // clean / delete all of GLFW's resources that were allocated
+  glDeleteProgram(basicShader.ID);
   glfwTerminate();
   return 0;
 }

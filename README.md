@@ -1,6 +1,10 @@
-# My First Renderer
+# SimpleGLRenderer
 
 ## Info 
+
+Current progress: 
+
+![img](/docs/img/current.png)
 
 ### Description
 
@@ -14,7 +18,7 @@ A simple renderer build with OpenGL on Linux.
 cd build
 cmake ..
 make
-./LearnOpenGL
+./renderer
 ```
 
 ### Styleguide
