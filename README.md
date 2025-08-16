@@ -4,7 +4,7 @@
 
 Current progress: 
 
-![img](/docs/img/current.png)
+![img](/docs/img/image.png)
 
 ### Description
 

@@ -37,14 +37,23 @@ int main() {
   Shader basicShader("./shaders/vLightShader.glsl",
                      "./shaders/fLightShader.glsl");
 
+  Shader lightCubeShader("./shaders/vLightCubeShader.glsl",
+                         "./shaders/fLightCubeShader.glsl");
+
   /*
     LIGHT MANAGER
   */
   LightManager lightManager;
-  // blue-ish light
+
   lightManager.addDirLight(
-      glm::vec3(0.0f, -1.0f, -1.0f), glm::vec3(0.1f, 0.1f, 0.1f),
-      glm::vec3(0.5f, 0.5f, 0.6f), glm::vec3(1.0f, 1.0f, 1.0f));
+      glm::vec3(0.0f, -1.0f, -1.0f), glm::vec3(0.05f, 0.05f, 0.05f),
+      glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(1.0f, 1.0f, 1.0f));
+
+  // blue-ish light
+  lightManager.addPointLight(
+      glm::vec3(-2.0f, 2.0f, 5.0f), glm::vec3(0.0f, -1.0f, -1.0f),
+      glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.4f, 0.4f, 0.7f),
+      glm::vec3(1.0f, 1.0f, 1.0f), 1.0f, 0.0014f, 0.000007f, 0.5f);
 
   basicShader.use();
   lightManager.sendLightsToShader(basicShader);
@@ -78,6 +87,18 @@ int main() {
     basicShader.setMat4("model", model);
 
     guitar.draw(basicShader);
+
+    lightCubeShader.use();
+    lightCubeShader.setMat4("view", view);
+    lightCubeShader.setMat4("projection", projection);
+    for (PointLight light : lightManager.pointLights) {
+      glm::mat4 model = glm::mat4(1.0f);
+      model = glm::translate(model, light.position);
+      model = glm::scale(model, glm::vec3(light.scale));
+      lightCubeShader.setMat4("model", model);
+      glBindVertexArray(lightManager.lightCubeVAO_);
+      glDrawArrays(GL_TRIANGLES, 0, 36);
+    }
 
     glfwSwapBuffers(window.window_);
     glfwPollEvents();
