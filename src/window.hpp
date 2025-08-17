@@ -73,6 +73,10 @@ class Window {
   float deltaTime_;  // Time between current frame and last frame
   float lastFrame_;  // Time of last frame
 
+  int frames_ = 0;
+  float fpsTimer_ = 0.0f;
+  int fps_ = 0;
+
   const char* title_;
   unsigned int width_;
   unsigned int height_;

@@ -46,12 +46,28 @@ Window::Window(unsigned int width,
   glfwSetFramebufferSizeCallback(window_, Window::framebufferSizeCallback);
 
   glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+  // disable v-sync
+  glfwSwapInterval(0);
 }
 
 void Window::updateDeltaTime() {
   float currentFrame = (float)glfwGetTime();
   deltaTime_ = currentFrame - lastFrame_;
   lastFrame_ = currentFrame;
+
+  // FPS display
+  frames_++;
+  fpsTimer_ += deltaTime_;
+  if (fpsTimer_ >= 1.0f) {
+    fps_ = frames_;
+    frames_ = 0;
+    fpsTimer_ = 0.0f;
+
+    std::string newTitle =
+        std::string(title_) + " - FPS: " + std::to_string(fps_);
+    glfwSetWindowTitle(window_, newTitle.c_str());
+  }
 }
 
 void Window::processInput() {
