@@ -5,59 +5,30 @@ LightManager::LightManager() {
   setupLightVAO();
 }
 
-bool LightManager::addDirLight(glm::vec3 direction,
-                               glm::vec3 ambient,
-                               glm::vec3 diffuse,
-                               glm::vec3 specular) {
+bool LightManager::addDirLight(DirectionalLight light) {
   if (lightCount_ + 1 > MAX_LIGHT_COUNT) {
     return false;
   }
-  DirectionalLight newLight{direction, ambient, diffuse, specular};
-  dirLights.push_back(newLight);
+  dirLights.push_back(light);
   lightCount_++;
-
   return true;
 }
 
-bool LightManager::addPointLight(glm::vec3 position,
-                                 glm::vec3 ambient,
-                                 glm::vec3 diffuse,
-                                 glm::vec3 specular,
-                                 float constant,
-                                 float linear,
-                                 float quadratic,
-                                 float scale) {
+bool LightManager::addPointLight(PointLight light) {
   if (lightCount_ + 1 > MAX_LIGHT_COUNT) {
     return false;
   }
-  PointLight newLight{position, ambient, diffuse,   specular,
-                      constant, linear,  quadratic, scale};
-  pointLights.push_back(newLight);
+  pointLights.push_back(light);
   lightCount_++;
-
   return true;
 }
 
-bool LightManager::addSpotLight(glm::vec3 position,
-                                glm::vec3 direction,
-                                glm::vec3 ambient,
-                                glm::vec3 diffuse,
-                                glm::vec3 specular,
-                                float cutOff,
-                                float outerCutOff,
-                                float constant,
-                                float linear,
-                                float quadratic,
-                                float scale) {
+bool LightManager::addSpotLight(SpotLight light) {
   if (lightCount_ + 1 > MAX_LIGHT_COUNT) {
     return false;
   }
-  SpotLight newLight{position, direction, ambient,     diffuse,
-                     specular, cutOff,    outerCutOff, constant,
-                     linear,   quadratic, scale};
-  spotLights.push_back(newLight);
+  spotLights.push_back(light);
   lightCount_++;
-
   return true;
 }
 

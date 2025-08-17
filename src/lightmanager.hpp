@@ -17,6 +17,25 @@ struct DirectionalLight {
   glm::vec3 specular;
 };
 
+/**
+ * @brief
+ *
+ * Attenuation is calculated based on the formula:
+ *
+ * F_att = 1.0 / ( K_c + (K_l * d) + (K_q * d^2) )
+ *
+ * More info for values can be found here:
+ * https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
+ *
+ * @param position
+ * @param ambient
+ * @param diffuse
+ * @param specular
+ * @param constant attenuation variable K_c
+ * @param linear attenuation variable K_l
+ * @param quadratic attenuation variable K_q
+ * @param scale size of the light cube
+ */
 struct PointLight {
   glm::vec3 position;
 
@@ -31,6 +50,30 @@ struct PointLight {
   float scale;  // size of rendered cube
 };
 
+/**
+ * @brief
+ *
+ * Attenuation is calculated based on the formula:
+ *
+ * F_att = 1.0 / ( K_c + (K_l * d) + (K_q * d^2) )
+ *
+ * More info for values can be found here:
+ * https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
+ *
+ * Soft edges are added by using `cutOff` and `outerCutOff`
+ *
+ * @param position
+ * @param direction
+ * @param ambient
+ * @param diffuse
+ * @param specular
+ * @param cutOff angle between SpotDir and LightDir
+ * @param outerCutOff angle between SpotDir and outerLightDir
+ * @param constant attenuation variable K_c
+ * @param linear attenuation variable K_l
+ * @param quadratic attenuation variable K_q
+ * @param scale size of the light cube
+ */
 struct SpotLight {
   glm::vec3 position;
   glm::vec3 direction;
@@ -97,87 +140,33 @@ class LightManager {
    *
    * The added light will be rendered on consequent calls to the scene.
    *
-   * @param direction
-   * @param ambient
-   * @param diffuse
-   * @param specular
-   * @return true on success,
-   * @return false on failure
+   * @param light
+   * @return true
+   * @return false
    */
-  bool addDirLight(glm::vec3 direction,
-                   glm::vec3 ambient,
-                   glm::vec3 diffuse,
-                   glm::vec3 specular);
+  bool addDirLight(DirectionalLight light);
 
   /**
    * @brief Adds a `PointLight` to the LightManager.
    *
    * The added light will be rendered on consequent calls to the scene.
-   * Attenuation is calculated based on the formula:
    *
-   * F_att = 1.0 / ( K_c + (K_l * d) + (K_q * d^2) )
-   *
-   * More info for values can be found here:
-   * https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
-   *
-   * @param position
-   * @param ambient
-   * @param diffuse
-   * @param specular
-   * @param constant attenuation variable K_c
-   * @param linear attenuation variable K_l
-   * @param quadratic attenuation variable K_q
-   * @param scale size of the light cube
+   * @param light
    * @return true on success,
    * @return false on failure
    */
-  bool addPointLight(glm::vec3 position,
-                     glm::vec3 ambient,
-                     glm::vec3 diffuse,
-                     glm::vec3 specular,
-                     float constant = 1.0f,
-                     float linear = 0.09f,
-                     float quadratic = 0.032f,
-                     float scale = 1.0f);
+  bool addPointLight(PointLight light);
 
   /**
    * @brief Adds a `SpotLight` to the LightManager.
    *
    * The added light will be rendered on consequent calls to the scene.
-   * Attenuation is calculated based on the formula:
    *
-   * F_att = 1.0 / ( K_c + (K_l * d) + (K_q * d^2) )
-   *
-   * More info for values can be found here:
-   * https://wiki.ogre3d.org/tiki-index.php?page=-Point+Light+Attenuation
-   *
-   * Soft edges are added by using `cutOff` and `outerCutOff`
-   *
-   * @param position
-   * @param direction
-   * @param ambient
-   * @param diffuse
-   * @param specular
-   * @param cutOff angle between SpotDir and LightDir
-   * @param outerCutOff angle between SpotDir and outerLightDir
-   * @param constant attenuation variable K_c
-   * @param linear attenuation variable K_l
-   * @param quadratic attenuation variable K_q
-   * @param scale size of the light cube
+   * @param light
    * @return true on success,
    * @return false on failure
    */
-  bool addSpotLight(glm::vec3 position,
-                    glm::vec3 direction,
-                    glm::vec3 ambient,
-                    glm::vec3 diffuse,
-                    glm::vec3 specular,
-                    float cutOff = glm::cos(glm::radians(12.5f)),
-                    float outerCutOff = glm::cos(glm::radians(18.0f)),
-                    float constant = 1.0f,
-                    float linear = 0.09f,
-                    float quadratic = 0.032f,
-                    float scale = 1.0f);
+  bool addSpotLight(SpotLight light);
 
   /**
    * @brief Sets uniforms on Shader for all lights.
