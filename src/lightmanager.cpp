@@ -20,7 +20,6 @@ bool LightManager::addDirLight(glm::vec3 direction,
 }
 
 bool LightManager::addPointLight(glm::vec3 position,
-                                 glm::vec3 direction,
                                  glm::vec3 ambient,
                                  glm::vec3 diffuse,
                                  glm::vec3 specular,
@@ -31,19 +30,43 @@ bool LightManager::addPointLight(glm::vec3 position,
   if (lightCount_ + 1 > MAX_LIGHT_COUNT) {
     return false;
   }
-  PointLight newLight{position, direction, ambient,   diffuse, specular,
-                      constant, linear,    quadratic, scale};
+  PointLight newLight{position, ambient, diffuse,   specular,
+                      constant, linear,  quadratic, scale};
   pointLights.push_back(newLight);
   lightCount_++;
 
   return true;
 }
 
-void LightManager::sendLightsToShader(Shader& shader) {
-  shader.setInt("numDirLights", dirLights.size());
+bool LightManager::addSpotLight(glm::vec3 position,
+                                glm::vec3 direction,
+                                glm::vec3 ambient,
+                                glm::vec3 diffuse,
+                                glm::vec3 specular,
+                                float cutOff,
+                                float outerCutOff,
+                                float constant,
+                                float linear,
+                                float quadratic,
+                                float scale) {
+  if (lightCount_ + 1 > MAX_LIGHT_COUNT) {
+    return false;
+  }
+  SpotLight newLight{position, direction, ambient,     diffuse,
+                     specular, cutOff,    outerCutOff, constant,
+                     linear,   quadratic, scale};
+  spotLights.push_back(newLight);
+  lightCount_++;
 
+  return true;
+}
+
+void LightManager::sendLightsToShader(Shader& shader) {
+  std::string uniformPrefix;
+
+  shader.setInt("numDirLights", dirLights.size());
   for (int i = 0; i < dirLights.size(); i++) {
-    std::string uniformPrefix = "dirLights[" + std::to_string(i) + "]";
+    uniformPrefix = "dirLights[" + std::to_string(i) + "]";
     shader.setVec3(uniformPrefix + ".direction", dirLights[i].direction);
     shader.setVec3(uniformPrefix + ".ambient", dirLights[i].ambient);
     shader.setVec3(uniformPrefix + ".diffuse", dirLights[i].diffuse);
@@ -51,9 +74,8 @@ void LightManager::sendLightsToShader(Shader& shader) {
   }
 
   shader.setInt("numPointLights", pointLights.size());
-
   for (int i = 0; i < pointLights.size(); i++) {
-    std::string uniformPrefix = "pointLights[" + std::to_string(i) + "]";
+    uniformPrefix = "pointLights[" + std::to_string(i) + "]";
     shader.setVec3(uniformPrefix + ".position", pointLights[i].position);
     shader.setVec3(uniformPrefix + ".ambient", pointLights[i].ambient);
     shader.setVec3(uniformPrefix + ".diffuse", pointLights[i].diffuse);
@@ -64,6 +86,19 @@ void LightManager::sendLightsToShader(Shader& shader) {
   }
 
   shader.setInt("numSpotLights", spotLights.size());
+  for (int i = 0; i < spotLights.size(); i++) {
+    uniformPrefix = "spotLights[" + std::to_string(i) + "]";
+    shader.setVec3(uniformPrefix + ".position", spotLights[i].position);
+    shader.setVec3(uniformPrefix + ".direction", spotLights[i].direction);
+    shader.setVec3(uniformPrefix + ".ambient", spotLights[i].ambient);
+    shader.setVec3(uniformPrefix + ".diffuse", spotLights[i].diffuse);
+    shader.setVec3(uniformPrefix + ".specular", spotLights[i].specular);
+    shader.setFloat(uniformPrefix + ".cutOff", spotLights[i].cutOff);
+    shader.setFloat(uniformPrefix + ".outerCutOff", spotLights[i].outerCutOff);
+    shader.setFloat(uniformPrefix + ".constant", spotLights[i].constant);
+    shader.setFloat(uniformPrefix + ".linear", spotLights[i].linear);
+    shader.setFloat(uniformPrefix + ".quadratic", spotLights[i].quadratic);
+  }
 }
 
 // clang-format off
