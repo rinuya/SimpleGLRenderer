@@ -12,7 +12,7 @@ Mesh::Mesh(std::vector<Vertex> vertices,
   setupMesh();
 }
 
-void Mesh::Draw(Shader& shader) {
+void Mesh::draw(Shader& shader) {
   // naming convention: each diffuse texture is named texture_diffuseN, and each
   // specular texture should be named texture_specularN
 

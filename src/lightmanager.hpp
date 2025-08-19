@@ -6,6 +6,8 @@
 #include <vector>
 
 #include "shader.hpp"
+#include "shapes/shape.hpp"
+#include "shapes/unitCube.hpp"
 
 constexpr unsigned int MAX_LIGHT_COUNT = 16;
 
@@ -97,9 +99,9 @@ class LightManager {
   // VAO to be used when drawing light cubes
   unsigned int lightCubeVAO_;
 
-  std::vector<DirectionalLight> dirLights;
-  std::vector<PointLight> pointLights;
-  std::vector<SpotLight> spotLights;
+  std::vector<DirectionalLight> dirLights_;
+  std::vector<PointLight> pointLights_;
+  std::vector<SpotLight> spotLights_;
 
   /**
    * @brief Construct a new Light Manager object
@@ -119,21 +121,21 @@ class LightManager {
    *
    * @return unsigned int
    */
-  unsigned int getDirectionalLightCount() const { return dirLights.size(); }
+  unsigned int getDirectionalLightCount() const { return dirLights_.size(); }
 
   /**
    * @brief Get the PointLight count
    *
    * @return unsigned int
    */
-  unsigned int getPointLightCount() const { return pointLights.size(); }
+  unsigned int getPointLightCount() const { return pointLights_.size(); }
 
   /**
    * @brief Get the SpotLight count
    *
    * @return unsigned int
    */
-  unsigned int getSpotLightCount() const { return spotLights.size(); }
+  unsigned int getSpotLightCount() const { return spotLights_.size(); }
 
   /**
    * @brief Adds a `DirectionalLight` to the LightManager.
@@ -181,7 +183,13 @@ class LightManager {
    *
    * @param shader
    */
-  void sendLightsToShader(Shader& shader);
+  void sendLightsToShader(Shader& shader) const;
+
+  /**
+   * @brief Draws light sources as cubes for visualization purposes
+   *
+   */
+  void drawLights(Shader& shader, glm::mat4 view, glm::mat4 projection) const;
 
  private:
   unsigned int lightCubeVBO_;

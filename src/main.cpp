@@ -107,26 +107,7 @@ int main() {
 
     guitar.draw(basicShader);
 
-    lightCubeShader.use();
-    lightCubeShader.setMat4("view", view);
-    lightCubeShader.setMat4("projection", projection);
-    for (PointLight light : lightManager.pointLights) {
-      glm::mat4 model = glm::mat4(1.0f);
-      model = glm::translate(model, light.position);
-      model = glm::scale(model, glm::vec3(light.scale));
-      lightCubeShader.setMat4("model", model);
-      glBindVertexArray(lightManager.lightCubeVAO_);
-      glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
-
-    for (SpotLight light : lightManager.spotLights) {
-      glm::mat4 model = glm::mat4(1.0f);
-      model = glm::translate(model, light.position);
-      model = glm::scale(model, glm::vec3(light.scale));
-      lightCubeShader.setMat4("model", model);
-      glBindVertexArray(lightManager.lightCubeVAO_);
-      glDrawArrays(GL_TRIANGLES, 0, 36);
-    }
+    lightManager.drawLights(lightCubeShader, view, projection);
 
     glfwSwapBuffers(window.window_);
     glfwPollEvents();

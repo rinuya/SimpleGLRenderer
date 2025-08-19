@@ -38,7 +38,7 @@ class Mesh {
    *
    * @param shader
    */
-  void Draw(Shader& shader);
+  void draw(Shader& shader);
 
  private:
   // render data
