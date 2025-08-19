@@ -4,9 +4,11 @@
 // clang-format on
 
 #include <iostream>
+#include <memory>
 
 #include "lightmanager.hpp"
 #include "model.hpp"
+#include "scene/scene.hpp"
 #include "shader.hpp"
 #include "window.hpp"
 
@@ -80,7 +82,16 @@ int main() {
   /*
     MODELS
   */
-  Model guitar("./assets/models/backpack/backpack.obj");
+  Scene scene;
+
+  glm::vec3 position = glm::vec3(0.0f, 3.0f, 0.0f);
+  glm::vec3 scale = glm::vec3(1.0f, 0.5f, 1.0f);
+
+  std::unique_ptr<Entity> guitar = std::make_unique<ModelEntity>(
+      std::make_unique<Model>("./assets/models/backpack/backpack.obj"),
+      Transform(position, scale));
+
+  scene.addEntity(std::move(guitar));
 
   glEnable(GL_DEPTH_TEST);
 
@@ -91,21 +102,15 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     basicShader.use();
-
     glm::mat4 view = camera.getViewMatrix();
     glm::mat4 projection = glm::perspective(
         glm::radians(camera.Fov),
         (float)window.getWidth() / (float)window.getHeight(), 0.1f, 100.0f);
 
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
     basicShader.setMat4("view", view);
     basicShader.setMat4("projection", projection);
-    basicShader.setMat4("model", model);
 
-    guitar.draw(basicShader);
+    scene.draw(basicShader);
 
     lightManager.drawLights(lightCubeShader, view, projection);
 
@@ -115,6 +120,7 @@ int main() {
 
   // clean / delete all of GLFW's resources that were allocated
   glDeleteProgram(basicShader.ID);
+  glDeleteProgram(lightCubeShader.ID);
   glfwTerminate();
   return 0;
 }
