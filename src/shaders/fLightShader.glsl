@@ -11,6 +11,8 @@ in vec3 FragPos;
 struct Material {
     sampler2D texture_diffuse1;
     sampler2D texture_specular1;
+    bool useColor;
+    vec3 color;
 };
 
 struct DirLight {
@@ -68,9 +70,15 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir, vec
 void main() {
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-    
-    vec3 materialDiff = texture(material.texture_diffuse1, TexCoords).rgb;
-    vec3 materialSpec = texture(material.texture_specular1, TexCoords).rgb;
+    vec3 materialDiff, materialSpec;
+
+    if (material.useColor) {
+        materialDiff = material.color;
+        materialSpec = material.color;
+    } else {
+        materialDiff = texture(material.texture_diffuse1, TexCoords).rgb;
+        materialSpec = texture(material.texture_specular1, TexCoords).rgb;
+    }
 
     vec3 texColor = vec3(0);
 

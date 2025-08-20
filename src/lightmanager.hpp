@@ -6,7 +6,6 @@
 #include <vector>
 
 #include "shader.hpp"
-#include "shapes/shape.hpp"
 #include "shapes/unitCube.hpp"
 
 constexpr unsigned int MAX_LIGHT_COUNT = 16;

@@ -30,7 +30,7 @@ class Scene {
    * @param key
    * @return std::shared_ptr<Mesh>
    */
-  std::shared_ptr<Mesh> getOrCreateMesh(const char* key);
+  std::shared_ptr<Mesh> getOrCreateMesh(const std::string& key);
 
   /**
    * @brief Get or create the Model object
@@ -38,7 +38,7 @@ class Scene {
    * @param path
    * @return std::shared_ptr<Model>
    */
-  std::shared_ptr<Model> getOrCreateModel(const char* path);
+  std::shared_ptr<Model> getOrCreateModel(const std::string& path);
 
   /**
    * @brief Draws entire Scene defined by `rootEntities` and their children.

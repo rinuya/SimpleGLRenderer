@@ -4,7 +4,7 @@ void Scene::addEntity(std::unique_ptr<Entity> entity) {
   rootEntities_.push_back(std::move(entity));
 }
 
-std::shared_ptr<Mesh> Scene::getOrCreateMesh(const char* key) {
+std::shared_ptr<Mesh> Scene::getOrCreateMesh(const std::string& key) {
   auto it = meshCache_.find(key);
   if (it != meshCache_.end()) {
     return it->second;
@@ -18,7 +18,7 @@ std::shared_ptr<Mesh> Scene::getOrCreateMesh(const char* key) {
   return mesh;
 }
 
-std::shared_ptr<Model> Scene::getOrCreateModel(const char* path) {
+std::shared_ptr<Model> Scene::getOrCreateModel(const std::string& path) {
   auto it = modelCache_.find(path);
   if (it != modelCache_.end()) {
     return it->second;

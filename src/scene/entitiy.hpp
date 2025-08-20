@@ -19,10 +19,15 @@ class Entity {
 class MeshEntity : public Entity {
  public:
   std::shared_ptr<Mesh> mesh_;
+  // in case of mono colored Mesh, this will be used
+  bool useColor_;
+  glm::vec3 color_;
 
   MeshEntity() = default;
 
   MeshEntity(std::shared_ptr<Mesh> mesh, Transform transform);
+
+  MeshEntity(std::shared_ptr<Mesh> mesh, Transform transform, glm::vec3 color);
 
   void draw(Shader& shader) const;
 

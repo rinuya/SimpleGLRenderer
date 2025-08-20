@@ -91,13 +91,24 @@ int main() {
       scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
       Transform(position, scale));
 
-  // position = glm::vec3(1.0f, 0.0f, 3.0f);
+  scene.addEntity(std::move(guitar));
+
+  position = glm::vec3(1.0f, 0.0f, 3.0f);
   // std::unique_ptr<Entity> guitar2 = std::make_unique<ModelEntity>(
   //     scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
   //     Transform(position, scale));
 
-  scene.addEntity(std::move(guitar));
-  // scene.addEntity(std::move(guitar2));
+  std::unique_ptr<Entity> box = std::make_unique<MeshEntity>(
+      scene.getOrCreateMesh("box"), Transform(position, scale),
+      glm::vec3(0.2f, 0.3f, 0.2f));
+
+  position = glm::vec3(3.0f, 0.0f, 3.0f);
+  std::unique_ptr<Entity> box2 = std::make_unique<MeshEntity>(
+      scene.getOrCreateMesh("box"), Transform(position, scale),
+      glm::vec3(0.5f, 0.3f, 0.7f));
+
+  scene.addEntity(std::move(box));
+  scene.addEntity(std::move(box2));
 
   glEnable(GL_DEPTH_TEST);
 

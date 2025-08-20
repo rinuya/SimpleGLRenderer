@@ -11,24 +11,31 @@
 #include "utils.hpp"
 
 struct Vertex {
-  glm::vec3 Position;
-  glm::vec3 Normal;
-  glm::vec2 TexCoords;
+  glm::vec3 position;
+  glm::vec3 normal;
+  glm::vec2 texCoords;
 };
 
 struct Texture {
   unsigned int id;
   std::string type;
-  std::string path;
+  std::string path;  // empty if texture is generated
 };
 
 class Mesh {
  public:
   // mesh data
-  std::vector<Vertex> vertices;
-  std::vector<unsigned int> indices;
-  std::vector<Texture> textures;
+  std::vector<Vertex> vertices_;
+  std::vector<unsigned int> indices_;
+  std::vector<Texture> textures_;
 
+  /**
+   * @brief Construct a new Mesh object
+   *
+   * @param vertices
+   * @param indices
+   * @param textures
+   */
   Mesh(std::vector<Vertex> vertices,
        std::vector<unsigned int> indices,
        std::vector<Texture> textures);
@@ -39,6 +46,13 @@ class Mesh {
    * @param shader
    */
   void draw(Shader& shader);
+
+  /**
+   * @brief Draws mesh to screen (mono colored Mesh)
+   *
+   * @param shader
+   */
+  void draw(Shader& shader, glm::vec3 color);
 
  private:
   // render data

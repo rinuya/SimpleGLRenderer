@@ -16,6 +16,8 @@ class Model {
  public:
   Model(const char* path);
 
+  Model(const std::string& path) : Model(path.c_str()) {};
+
   /**
    * @brief Draws all of the models meshes
    *
