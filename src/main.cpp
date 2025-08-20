@@ -84,7 +84,7 @@ int main() {
   */
   Scene scene;
 
-  glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 position = glm::vec3(0.0f, 1.2f, 0.0f);
   glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
   std::unique_ptr<Entity> guitar = std::make_unique<ModelEntity>(
@@ -102,10 +102,11 @@ int main() {
       scene.getOrCreateMesh("box"), Transform(position, scale),
       glm::vec3(0.2f, 0.3f, 0.2f));
 
-  position = glm::vec3(3.0f, 0.0f, 3.0f);
+  position = glm::vec3(0.0f, -1.0f, 0.0f);
+  scale = glm::vec3(10.0f, 1.0f, 10.0f);
   std::unique_ptr<Entity> box2 = std::make_unique<MeshEntity>(
       scene.getOrCreateMesh("box"), Transform(position, scale),
-      glm::vec3(0.5f, 0.3f, 0.7f));
+      glm::vec3(0.9f, 0.9f, 0.9f));
 
   scene.addEntity(std::move(box));
   scene.addEntity(std::move(box2));

@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "mesh.hpp"
-#include "shapes/unitCube.hpp"
 
 namespace MeshFactory {
 std::unique_ptr<Mesh> makeBox();

@@ -28,12 +28,6 @@ make
 
 ### TODO:
 
-*Setup either*:
-- a default texture (works with current shader)
-- just a color for mesh (might require a bit of a change to the shader)
-
-Then, render some boxes.
-
 *Setup UI elements*:
 - left side the scene
 - right side the details of selected object
