@@ -1,4 +1,4 @@
-#include "model.hpp"
+#include "scene/model.hpp"
 
 Model::Model(const char* path) {
   loadModel(path);

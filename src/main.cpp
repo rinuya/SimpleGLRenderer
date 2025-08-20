@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "lightmanager.hpp"
-#include "model.hpp"
+#include "scene/model.hpp"
 #include "scene/scene.hpp"
 #include "shader.hpp"
 #include "window.hpp"
@@ -84,14 +84,20 @@ int main() {
   */
   Scene scene;
 
-  glm::vec3 position = glm::vec3(0.0f, 3.0f, 0.0f);
-  glm::vec3 scale = glm::vec3(1.0f, 0.5f, 1.0f);
+  glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f);
+  glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
   std::unique_ptr<Entity> guitar = std::make_unique<ModelEntity>(
-      std::make_unique<Model>("./assets/models/backpack/backpack.obj"),
+      scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
       Transform(position, scale));
 
+  // position = glm::vec3(1.0f, 0.0f, 3.0f);
+  // std::unique_ptr<Entity> guitar2 = std::make_unique<ModelEntity>(
+  //     scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
+  //     Transform(position, scale));
+
   scene.addEntity(std::move(guitar));
+  // scene.addEntity(std::move(guitar2));
 
   glEnable(GL_DEPTH_TEST);
 

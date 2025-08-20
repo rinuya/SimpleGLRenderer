@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "mesh.hpp"
+#include "scene/mesh.hpp"
 #include "shader.hpp"
 
 class Model {

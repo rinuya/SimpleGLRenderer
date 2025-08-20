@@ -3,8 +3,8 @@
 
 #include <memory>
 #include <vector>
-#include "mesh.hpp"
-#include "model.hpp"
+#include "scene/mesh.hpp"
+#include "scene/model.hpp"
 #include "scene/transform.hpp"
 #include "shader.hpp"
 
@@ -18,11 +18,11 @@ class Entity {
 
 class MeshEntity : public Entity {
  public:
-  std::unique_ptr<Mesh> mesh_;
+  std::shared_ptr<Mesh> mesh_;
 
   MeshEntity() = default;
 
-  MeshEntity(std::unique_ptr<Mesh> mesh, Transform transform);
+  MeshEntity(std::shared_ptr<Mesh> mesh, Transform transform);
 
   void draw(Shader& shader) const;
 
@@ -31,11 +31,11 @@ class MeshEntity : public Entity {
 
 class ModelEntity : public Entity {
  public:
-  std::unique_ptr<Model> model_;
+  std::shared_ptr<Model> model_;
 
   ModelEntity() = default;
 
-  ModelEntity(std::unique_ptr<Model> model, Transform transform);
+  ModelEntity(std::shared_ptr<Model> model, Transform transform);
 
   void draw(Shader& shader) const;
 
