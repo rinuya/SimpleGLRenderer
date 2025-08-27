@@ -1,5 +1,5 @@
-#ifndef CALLBACK_H
-#define CALLBACK_H
+#ifndef WINDOW_H
+#define WINDOW_H
 // clang-format off
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -65,7 +65,7 @@ class Window {
   bool initFailed_;
 
   Camera& camera_;
-  bool captureMouse_;
+  bool moveCamera_;
   bool firstMouse_;
   float lastX_;
   float lastY_;

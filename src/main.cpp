@@ -10,6 +10,7 @@
 #include "scene/model.hpp"
 #include "scene/scene.hpp"
 #include "shader.hpp"
+#include "ui.hpp"
 #include "window.hpp"
 
 const unsigned int SCR_WIDTH = 1200;  // screen width
@@ -19,6 +20,7 @@ int main() {
   /*
     SETUP
   */
+
   if (!glfwInit()) {
     std::cerr << "ERROR: Failed to initialize GLFW\n";
     return -1;
@@ -32,6 +34,12 @@ int main() {
     // window init failed
     return -1;
   }
+
+  /*
+    UI
+  */
+  ImGui::CreateContext();  // Setup Dear ImGui context
+  UI ui(window.window_);
 
   /*
     SHADERS
@@ -113,7 +121,12 @@ int main() {
 
   glEnable(GL_DEPTH_TEST);
 
+  /*
+    RENDER LOOP
+  */
+
   while (!glfwWindowShouldClose(window.window_)) {
+    ui.beginFrame();
     window.updateDeltaTime();
     window.processInput();
 
@@ -132,6 +145,8 @@ int main() {
 
     lightManager.drawLights(lightCubeShader, view, projection);
 
+    ui.drawUI();
+    ui.renderFrame();
     glfwSwapBuffers(window.window_);
     glfwPollEvents();
   }
@@ -139,6 +154,8 @@ int main() {
   // clean / delete all of GLFW's resources that were allocated
   glDeleteProgram(basicShader.ID);
   glDeleteProgram(lightCubeShader.ID);
+
+  glfwDestroyWindow(window.window_);
   glfwTerminate();
   return 0;
 }

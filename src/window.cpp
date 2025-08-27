@@ -8,7 +8,7 @@ Window::Window(unsigned int width,
   // if constructor fails at any point, initFailed_ will be set to true
   initFailed_ = false;
 
-  captureMouse_ = true;
+  moveCamera_ = true;
   firstMouse_ = true;
 
   lastX_ = 0.0f;
@@ -47,8 +47,8 @@ Window::Window(unsigned int width,
 
   glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-  // disable v-sync
-  glfwSwapInterval(0);
+  // enable v-sync
+  glfwSwapInterval(1);
 }
 
 void Window::updateDeltaTime() {
@@ -74,23 +74,30 @@ void Window::processInput() {
   if (glfwGetKey(window_, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window_, true);
 
-  if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
-    camera_.processKeyboard(FORWARD, deltaTime_);
+  // WASD Camera movement
+  if (moveCamera_) {
+    if (glfwGetKey(window_, GLFW_KEY_W) == GLFW_PRESS) {
+      camera_.processKeyboard(FORWARD, deltaTime_);
+    }
+    if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS) {
+      camera_.processKeyboard(BACKWARD, deltaTime_);
+    }
+    if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS) {
+      camera_.processKeyboard(LEFT, deltaTime_);
+    }
+    if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS) {
+      camera_.processKeyboard(RIGHT, deltaTime_);
+    }
   }
-  if (glfwGetKey(window_, GLFW_KEY_S) == GLFW_PRESS)
-    camera_.processKeyboard(BACKWARD, deltaTime_);
-  if (glfwGetKey(window_, GLFW_KEY_A) == GLFW_PRESS)
-    camera_.processKeyboard(LEFT, deltaTime_);
-  if (glfwGetKey(window_, GLFW_KEY_D) == GLFW_PRESS)
-    camera_.processKeyboard(RIGHT, deltaTime_);
-  if (glfwGetKey(window_, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS) {
-    captureMouse_ = false;
-    firstMouse_ = true;
-    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-  }
-  if (glfwGetKey(window_, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-    captureMouse_ = true;
+
+  // Update mouse capture based on right mouse button
+  if (glfwGetMouseButton(window_, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS) {
+    moveCamera_ = true;
     glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  } else {
+    moveCamera_ = false;
+    glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    firstMouse_ = true;
   }
 }
 
@@ -120,7 +127,7 @@ void Window::handleResizeInput(int width, int height) {
 }
 
 void Window::handleMouseInput(double xposIn, double yposIn) {
-  if (!captureMouse_) {
+  if (!moveCamera_) {
     return;
   }
 
@@ -145,5 +152,8 @@ void Window::handleMouseInput(double xposIn, double yposIn) {
 }
 
 void Window::handleScrollInput(double xoffset, double yoffset) {
+  if (!moveCamera_) {
+    return;
+  }
   camera_.processMouseScroll((float)yoffset);
 }
