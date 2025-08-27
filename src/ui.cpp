@@ -1,7 +1,10 @@
 #include "ui.hpp"
 
-UI::UI(GLFWwindow* window)
-    : window_(window), io_(ImGui::GetIO()), style_(ImGui::GetStyle()) {
+UI::UI(GLFWwindow* window, Scene* scene)
+    : window_(window),
+      io_(ImGui::GetIO()),
+      style_(ImGui::GetStyle()),
+      scene_(scene) {
   float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(
       glfwGetPrimaryMonitor());  // Valid on GLFW 3.3+ only
 
@@ -36,7 +39,28 @@ void UI::beginFrame() {
 }
 
 void UI::drawUI() {
-  ImGui::Begin("Hello, world!");
+  ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+
+  int displayWidth;
+  glfwGetFramebufferSize(window_, &displayWidth, &displayHeight_);
+
+  ImVec2 minSize(150, (float)displayHeight_);
+  ImVec2 maxSize(FLT_MAX, (float)displayHeight_);
+
+  ImGui::SetNextWindowSizeConstraints(minSize, maxSize);
+
+  ImGui::Begin("Scene Graph");
+
+  for (auto& rootEntity : scene_->rootEntities_) {
+    Entity* entityPtr = rootEntity.get();
+    auto entityRow = ImGui::Selectable(entityPtr->label_.c_str(),
+                                       selectedEntity_ == entityPtr);
+    // if selected
+    if (entityRow) {
+      selectedEntity_ = entityPtr;
+    }
+  }
+
   ImGui::End();
 };
 

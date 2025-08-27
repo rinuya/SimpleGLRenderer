@@ -36,12 +36,6 @@ int main() {
   }
 
   /*
-    UI
-  */
-  ImGui::CreateContext();  // Setup Dear ImGui context
-  UI ui(window.window_);
-
-  /*
     SHADERS
   */
   Shader basicShader("./shaders/vLightShader.glsl",
@@ -96,7 +90,7 @@ int main() {
   glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
   std::unique_ptr<Entity> guitar = std::make_unique<ModelEntity>(
-      scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
+      "Guitar", scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
       Transform(position, scale));
 
   scene.addEntity(std::move(guitar));
@@ -107,23 +101,28 @@ int main() {
   //     Transform(position, scale));
 
   std::unique_ptr<Entity> box = std::make_unique<MeshEntity>(
-      scene.getOrCreateMesh("box"), Transform(position, scale),
+      "Box1", scene.getOrCreateMesh("box"), Transform(position, scale),
       glm::vec3(0.2f, 0.3f, 0.2f));
 
   position = glm::vec3(0.0f, -1.0f, 0.0f);
   scale = glm::vec3(10.0f, 1.0f, 10.0f);
   std::unique_ptr<Entity> box2 = std::make_unique<MeshEntity>(
-      scene.getOrCreateMesh("box"), Transform(position, scale),
+      "Box2", scene.getOrCreateMesh("box"), Transform(position, scale),
       glm::vec3(0.9f, 0.9f, 0.9f));
 
   scene.addEntity(std::move(box));
   scene.addEntity(std::move(box2));
 
-  glEnable(GL_DEPTH_TEST);
+  /*
+    UI
+  */
+  ImGui::CreateContext();  // Setup Dear ImGui context
+  UI ui(window.window_, &scene);
 
   /*
     RENDER LOOP
   */
+  glEnable(GL_DEPTH_TEST);
 
   while (!glfwWindowShouldClose(window.window_)) {
     ui.beginFrame();

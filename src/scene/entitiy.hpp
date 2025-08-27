@@ -10,8 +10,10 @@
 
 class Entity {
  public:
+  std::string label_;
   Transform transform_;
-  Entity(Transform transform) : transform_(transform) {};
+  Entity(std::string label, Transform transform)
+      : label_(label), transform_(transform) {};
   virtual ~Entity() = default;
   virtual void draw(Shader& shader) const = 0;
 };
@@ -25,9 +27,14 @@ class MeshEntity : public Entity {
 
   MeshEntity() = default;
 
-  MeshEntity(std::shared_ptr<Mesh> mesh, Transform transform);
+  MeshEntity(std::string label,
+             std::shared_ptr<Mesh> mesh,
+             Transform transform);
 
-  MeshEntity(std::shared_ptr<Mesh> mesh, Transform transform, glm::vec3 color);
+  MeshEntity(std::string label,
+             std::shared_ptr<Mesh> mesh,
+             Transform transform,
+             glm::vec3 color);
 
   void draw(Shader& shader) const;
 
@@ -40,7 +47,9 @@ class ModelEntity : public Entity {
 
   ModelEntity() = default;
 
-  ModelEntity(std::shared_ptr<Model> model, Transform transform);
+  ModelEntity(std::string label,
+              std::shared_ptr<Model> model,
+              Transform transform);
 
   void draw(Shader& shader) const;
 
