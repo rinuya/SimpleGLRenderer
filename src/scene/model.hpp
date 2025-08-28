@@ -14,8 +14,18 @@
 
 class Model {
  public:
+  /**
+   * @brief Construct a new Model object
+   *
+   * @param path
+   */
   Model(const char* path);
 
+  /**
+   * @brief Construct a new Model object
+   *
+   * @param path
+   */
   Model(const std::string& path) : Model(path.c_str()) {};
 
   /**

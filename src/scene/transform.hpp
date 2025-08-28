@@ -10,6 +10,12 @@ class Transform {
   glm::vec3 position_;
   glm::vec3 scale_;
 
+  /**
+   * @brief Construct a new Transform object
+   *
+   * @param position
+   * @param scale
+   */
   Transform(glm::vec3 position, glm::vec3 scale);
 
   /**
@@ -18,8 +24,6 @@ class Transform {
    * @return glm::mat4
    */
   glm::mat4 getModelMatrix() const;
-
- private:
 };
 
 #endif

@@ -88,27 +88,23 @@ int main() {
 
   glm::vec3 position = glm::vec3(0.0f, 1.2f, 0.0f);
   glm::vec3 scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
   std::unique_ptr<Entity> guitar = std::make_unique<ModelEntity>(
-      "Guitar", scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
+      "Guitar Model",
+      scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
       Transform(position, scale));
 
   scene.addEntity(std::move(guitar));
 
   position = glm::vec3(1.0f, 0.0f, 3.0f);
-  // std::unique_ptr<Entity> guitar2 = std::make_unique<ModelEntity>(
-  //     scene.getOrCreateModel("./assets/models/backpack/backpack.obj"),
-  //     Transform(position, scale));
-
   std::unique_ptr<Entity> box = std::make_unique<MeshEntity>(
-      "Box1", scene.getOrCreateMesh("box"), Transform(position, scale),
-      glm::vec3(0.2f, 0.3f, 0.2f));
+      "Cube", scene.getOrCreateMesh("box"), Transform(position, scale),
+      glm::vec3(134.0f / 255.0f, 40.0f / 255.0f, 40.0f / 255.0f));
 
   position = glm::vec3(0.0f, -1.0f, 0.0f);
-  scale = glm::vec3(10.0f, 1.0f, 10.0f);
+  scale = glm::vec3(200.0f, 1.0f, 200.0f);
   std::unique_ptr<Entity> box2 = std::make_unique<MeshEntity>(
-      "Box2", scene.getOrCreateMesh("box"), Transform(position, scale),
-      glm::vec3(0.9f, 0.9f, 0.9f));
+      "Ground", scene.getOrCreateMesh("box"), Transform(position, scale),
+      glm::vec3(96.0f / 255.0f, 178.0f / 255.0f, 93.0f / 255.0f));
 
   scene.addEntity(std::move(box));
   scene.addEntity(std::move(box2));

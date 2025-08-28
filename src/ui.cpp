@@ -39,19 +39,28 @@ void UI::beginFrame() {
 }
 
 void UI::drawUI() {
-  ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
+  glfwGetFramebufferSize(window_, &displayWidth_, &displayHeight_);
+  drawSceneGraph();
+  if (selectedEntity_ != NULL) {
+    drawEntity();
+  }
+};
 
-  int displayWidth;
-  glfwGetFramebufferSize(window_, &displayWidth, &displayHeight_);
+void UI::renderFrame() {
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+};
 
-  ImVec2 minSize(150, (float)displayHeight_);
-  ImVec2 maxSize(FLT_MAX, (float)displayHeight_);
+void UI::drawSceneGraph() {
+  ImVec2 minSize(SCENE_WINDOW_MIN_WIDTH, (float)displayHeight_);
+  ImVec2 maxSize(displayWidth_, (float)displayHeight_);
 
   ImGui::SetNextWindowSizeConstraints(minSize, maxSize);
+  ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
 
   ImGui::Begin("Scene Graph");
 
-  for (auto& rootEntity : scene_->rootEntities_) {
+  for (const auto& rootEntity : scene_->rootEntities_) {
     Entity* entityPtr = rootEntity.get();
     auto entityRow = ImGui::Selectable(entityPtr->label_.c_str(),
                                        selectedEntity_ == entityPtr);
@@ -62,9 +71,27 @@ void UI::drawUI() {
   }
 
   ImGui::End();
-};
+}
 
-void UI::renderFrame() {
-  ImGui::Render();
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-};
+void UI::drawEntity() {
+  ImGui::Begin("Entity");
+
+  if (auto meshEntity = dynamic_cast<MeshEntity*>(selectedEntity_)) {
+    ImGui::SeparatorText("Mesh Entity");
+    ImGui::ColorEdit3("Color", glm::value_ptr(meshEntity->color_));
+  } else if (auto modelEntity = dynamic_cast<ModelEntity*>(selectedEntity_)) {
+    ImGui::SeparatorText("Model Entity");
+    ImGui::Text("No Model specific fields yet");
+  } else {
+    ImGui::Text("Unknown entity type");
+  }
+
+  ImGui::SeparatorText("Transform");
+  ImGui::DragFloat3(
+      "Position", glm::value_ptr(selectedEntity_->transform_.position_), 0.1f);
+
+  ImGui::DragFloat3("Scale", glm::value_ptr(selectedEntity_->transform_.scale_),
+                    0.1f);
+
+  ImGui::End();
+}

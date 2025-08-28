@@ -45,8 +45,6 @@ class Scene {
    *
    */
   void draw(Shader& shader) const;
-
- private:
 };
 
 #endif
